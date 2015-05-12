@@ -14,8 +14,9 @@ module Freeflow
     def filter(*args)
       options = args.pop
       filter_name = options.delete(:with)
-      exts = args
-      exts.each { |ext| self.class.registered_filters[ext.to_sym] = filter_for(filter_name, options) }
+      exts = args.map(&:to_sym)
+      ftr = filter_for(filter_name, options)
+      exts.each { |ext| self.class.registered_filters[ext] = ftr }
     end
 
     private
