@@ -13,16 +13,11 @@ module Freeflow
 
     def filter(*args)
       options = args.pop
-      filter_name = options.delete(:with)
-      exts = args.map(&:to_sym)
-      ftr = filter_for(filter_name, options)
-      exts.each { |ext| self.class.registered_filters[ext] = ftr }
-    end
+      name = options.delete(:with)
+      extensions = args.map(&:to_sym)
 
-    private
-
-    def filter_for(filter_name, options)
-      ->(c) { c.filter filter_name, options }
+      filter = ->(context) { context.filter(name, options) }
+      extensions.each { |extension| self.class.registered_filters[extension] = filter }
     end
   end
 end
