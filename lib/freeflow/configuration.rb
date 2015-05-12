@@ -18,10 +18,6 @@ module Freeflow
       exts.each { |ext| self.class.registered_filters[ext.to_sym] = filter_for(filter_name, options) }
     end
 
-    def sass_paths(*paths)
-      SassPaths.append *paths
-    end
-
     private
 
     def filter_for(filter_name, options)
