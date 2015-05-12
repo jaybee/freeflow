@@ -28,7 +28,7 @@ Register any nanoc filter against a collection of extensions. For example, in
 your nanoc `Rules` file:
 
 ```ruby
-Freeflow.configure(self) do
+Freeflow.configure do
   filter "scss", :with => :sass, :syntax => :scss
   filter "coffeescript", "coffee", "cs", :with => :coffeescript
   filter "markdown", "md", :with => :kramdown
@@ -40,8 +40,7 @@ Then add `Freeflow` to your compile and route steps:
 
 ```ruby
 compile "*" do
-  Freeflow.compile item
-  layout "default" unless item.binary?
+  Freeflow.compile item, self
 end
 
 route "*" do
