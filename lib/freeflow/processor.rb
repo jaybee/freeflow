@@ -6,8 +6,8 @@ module Freeflow
       @item = item
     end
 
-    def compile
-      extensions.each { |ext| apply_filter ext }
+    def compile(context)
+      extensions.reverse.each { |ext| apply_filter ext, context }
     end
 
     def route
@@ -18,12 +18,12 @@ module Freeflow
       end
     end
 
-    def apply_filter(ext)
-      return unless (filter = Configuration.registered_filters[ext])
-      Configuration.context.instance_exec { filter }
-    end
-
     private
+
+    def apply_filter(ext, context)
+      return unless (filter = Configuration.registered_filters[ext])
+      filter.call(context)
+    end
 
     def extensions
       @extensions ||= item[:extension].split(".").map(&:to_sym)
